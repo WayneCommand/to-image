@@ -1,26 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <ToImage></ToImage>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ToImage from "@/components/ToImage";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ToImage
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

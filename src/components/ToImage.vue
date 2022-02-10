@@ -7,7 +7,7 @@
             <va-file-upload
                 v-model="image"
                 dropzone
-                file-types=".jpg,.png,.jfif,.webp,.heic,"
+                file-types=".jpg,.png,.jfif,.webp,.heic,.heif,.avif,"
                 type="single"
             />
           </div>
@@ -48,10 +48,10 @@
       </div>
       <div class="flex md3">
         <va-card class="page-card">
-          <va-card-title>HEIC</va-card-title>
+          <va-card-title>HEIF</va-card-title>
           <va-card-content>
             <va-image
-                :src="heic"
+                :src="heif"
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
@@ -87,7 +87,7 @@ export default {
       image: [],
       jpg: '',
       png: '',
-      heic: '',
+      heif: '',
       webp: '',
 
     }
@@ -114,7 +114,7 @@ export default {
         let uploadFile = data[data.length - 1];
         this.reqImgByFormat(uploadFile, 'jpg', blob => this.jpg = blob);
         this.reqImgByFormat(uploadFile, 'png', blog => this.png = blog);
-        this.reqImgByFormat(uploadFile, 'heic', blog => this.heic = blog);
+        this.reqImgByFormat(uploadFile, 'heic', blog => this.heif = blog);
         this.reqImgByFormat(uploadFile, 'webp', blog => this.webp = blog);
       }
     }

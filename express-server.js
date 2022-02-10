@@ -5,7 +5,7 @@ const sharp = require('sharp');
 const app = express()
 
 app.use(cors({
-    origin: 'http://192.168.50.128:8080'
+    origin: '*'
 }))
 
 app.post('/api/image/:type', function (req, res) {
@@ -56,6 +56,9 @@ const image_process = (form, image, format, res) => {
                         break;
                     case 'heic':
                         res.set('Content-Type', 'image/heic');
+                        break;
+                    case 'heif':
+                        res.set('Content-Type', 'image/heif');
                         break;
                 }
                 res.send(data);

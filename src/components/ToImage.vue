@@ -8,7 +8,7 @@
                 v-model="images"
                 dropzone
                 file-types=".jpg,.png,.jfif,.webp,"
-                type="single"
+                type="gallery"
             />
           </div>
         </div>
@@ -21,7 +21,7 @@
           <va-card-title>JPG</va-card-title>
           <va-card-content>
             <va-image
-                src="https://picsum.photos/400/200"
+                :src="images"
                 style="min-height: 300px"
             >
               <template #loader>

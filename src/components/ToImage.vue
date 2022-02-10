@@ -5,10 +5,10 @@
         <div class="flex md12" >
           <div class="item">
             <va-file-upload
-                v-model="images"
+                v-model="image"
                 dropzone
-                file-types=".jpg,.png,.jfif,.webp,"
-                type="gallery"
+                file-types=".jpg,.png,.jfif,.webp,.heic,"
+                type="single"
             />
           </div>
         </div>
@@ -21,8 +21,7 @@
           <va-card-title>JPG</va-card-title>
           <va-card-content>
             <va-image
-                :src="images"
-                style="min-height: 300px"
+                :src="jpg"
             >
               <template #loader>
                 <va-progress-circle indeterminate />
@@ -39,7 +38,7 @@
           <va-card-title>PNG</va-card-title>
           <va-card-content>
             <va-image
-                src="https://picsum.photos/400/200"
+                :src="png"
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
@@ -49,10 +48,10 @@
       </div>
       <div class="flex md3">
         <va-card class="page-card">
-          <va-card-title>JFIF</va-card-title>
+          <va-card-title>HEIC</va-card-title>
           <va-card-content>
             <va-image
-                src="https://picsum.photos/400/200"
+                :src="heic"
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
@@ -65,7 +64,7 @@
           <va-card-title>WEBP</va-card-title>
           <va-card-content>
             <va-image
-                src="https://picsum.photos/400/200"
+                :src="webp"
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
@@ -80,26 +79,47 @@
 </template>
 
 <script>
+const axios = require('axios').default;
 export default {
   name: "ToImage",
-  data () {
+  data() {
     return {
-      images:[],
-      jpg: {},
-      png: {},
-      jfif: {},
-      webp: {},
+      image: [],
+      jpg: '',
+      png: '',
+      heic: '',
+      webp: '',
+
+    }
+  },
+  methods: {
+    reqImgByFormat(uploadFile, format, setVal) {
+      let fd = new FormData()
+      fd.append('image', uploadFile);
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        },
+        responseType: 'blob'
+      }
+      axios.post(`http://192.168.50.128:8081/api/image/${format}`, fd, config)
+          .then(resp => {
+            setVal(window.URL.createObjectURL(resp.data));
+          });
     }
   },
   watch: {
-    images(data) {
+    image(data) {
       if (data.length) {
         let uploadFile = data[data.length - 1];
-        console.log(uploadFile);
+        this.reqImgByFormat(uploadFile, 'jpg', blob => this.jpg = blob);
+        this.reqImgByFormat(uploadFile, 'png', blog => this.png = blog);
+        this.reqImgByFormat(uploadFile, 'heic', blog => this.heic = blog);
+        this.reqImgByFormat(uploadFile, 'webp', blog => this.webp = blog);
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

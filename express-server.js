@@ -1,31 +1,23 @@
 const express = require('express')
 const multiparty = require('multiparty');
+const cors = require('cors')
 const sharp = require('sharp');
 const app = express()
 
-app.post('/api/img', function (req, res) {
+app.use(cors({
+    origin: 'http://192.168.50.128:8080'
+}))
 
+app.post('/api/image/:type', function (req, res) {
 
     let form = new multiparty.Form();
-
     let image = {
         filename: 'untitled.',
         size: 0,
         buffer: []
     };
 
-    form.on('close', () => {
-        console.log('image process start')
-        sharp(Buffer.concat(image.buffer))
-            .webp()
-            .toBuffer((err, data, info) => {
-                console.log(err);
-                console.log(info);
-                console.log('image process end')
-                res.set('Content-Type', 'image/webp');
-                res.send(data);
-            })
-    });
+    image_process(form, image, req.params.type, res);
 
     // listen on part event for image file
     form.on('part', function(part){
@@ -44,3 +36,29 @@ app.post('/api/img', function (req, res) {
 
 app.listen(8081)
 console.log('Express started on port 8081');
+
+const image_process = (form, image, format, res) => {
+    form.on('close', () => {
+        console.log('image process start')
+        sharp(Buffer.concat(image.buffer))
+            .toFormat(format)
+            .toBuffer((err, data, info) => {
+                console.log('image process end')
+                switch (format) {
+                    case 'jpg':
+                        res.set('Content-Type', 'image/jpg');
+                        break;
+                    case 'png':
+                        res.set('Content-Type', 'image/png');
+                        break;
+                    case 'webp':
+                        res.set('Content-Type', 'image/webp');
+                        break;
+                    case 'heic':
+                        res.set('Content-Type', 'image/heic');
+                        break;
+                }
+                res.send(data);
+            });
+    });
+};

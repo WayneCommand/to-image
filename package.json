@@ -9,7 +9,9 @@
     "sharp": "node express-server.js"
   },
   "dependencies": {
+    "axios": "^0.25.0",
     "core-js": "^3.6.5",
+    "cors": "^2.8.5",
     "express": "^4.17.2",
     "multiparty": "^4.2.3",
     "sharp": "^0.30.0",

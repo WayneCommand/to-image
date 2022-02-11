@@ -30,18 +30,9 @@ RUN git clone --depth 1 --recursive https://gitlab.com/wg1/jpeg-xl.git \
   && cd jpeg-xl \
   && mkdir build \
   && cd build \
-  && cmake -G "Unix Makefiles" \
-    -DCMAKE_BUILD_TYPE=Debug \
-    -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DBUILD_TESTING=0 \
-    -DJPEGXL_ENABLE_FUZZERS=0 \
-    -DJPEGXL_ENABLE_MANPAGES=0 \
-    -DJPEGXL_ENABLE_BENCHMARK=0 \
-    -DJPEGXL_ENABLE_EXAMPLES=0 \
-    -DJPEGXL_ENABLE_SKCMS=0 \
-    .. \
-  && make -j$(nproc) \
-  && make install
+  && cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF .. \
+  && cmake --build . -- -j$(nproc) \
+  && cmake --install .
 
 
 # stuff we need to build our own libvips ... this is a pretty random selection

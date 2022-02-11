@@ -22,18 +22,6 @@ RUN add-apt-repository ppa:strukturag/libde265 \
 ENV LD_LIBRARY_PATH /usr/local/lib
 ENV PKG_CONFIG_PATH /usr/local/lib/pkgconfig
 
-# install the system brotli
-RUN apt-get install -y \
-  libbrotli-dev
-
-RUN git clone --depth 1 --recursive https://gitlab.com/wg1/jpeg-xl.git \
-  && cd jpeg-xl \
-  && mkdir build \
-  && cd build \
-  && cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF .. \
-  && cmake --build . -- -j$(nproc) \
-  && cmake --install .
-
 
 # stuff we need to build our own libvips ... this is a pretty random selection
 # of dependencies, you'll want to adjust these

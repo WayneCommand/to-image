@@ -11,7 +11,8 @@ RUN apt-get update \
     cmake \
     git \
     curl \
-    software-properties-common
+    software-properties-common \
+    wget
 
 # add the libheif PPA -- it includes AVIF and HEIC support
 RUN add-apt-repository ppa:strukturag/libde265 \

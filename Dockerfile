@@ -33,8 +33,6 @@ RUN apt-get install -y \
 ARG VIPS_VERSION=8.11.1
 ARG VIPS_URL=https://github.com/libvips/libvips/releases/download
 
-WORKDIR /usr/local/src
-
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
 	&& tar xzf vips-${VIPS_VERSION}.tar.gz \
 	&& cd vips-${VIPS_VERSION} \
@@ -49,8 +47,6 @@ RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 
 RUN apt-get update && apt-get install -y nodejs
-
-RUN cd /home/runner/work/to-image/to-image
 
 RUN npm install
 

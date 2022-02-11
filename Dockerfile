@@ -48,6 +48,8 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 
 RUN apt-get update && apt-get install -y nodejs
 
+RUN npm install
+
 EXPOSE 8081
 ENTRYPOINT ["node", "run", "sharp"]
 

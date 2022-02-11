@@ -48,7 +48,7 @@
       </div>
       <div class="flex md3">
         <va-card class="page-card">
-          <va-card-title>HEIF</va-card-title>
+          <va-card-title>HEIF(HEIC)</va-card-title>
           <va-card-content>
             <va-image
                 :src="heif"
@@ -102,7 +102,7 @@ export default {
         },
         responseType: 'blob'
       }
-      axios.post(`http://192.168.50.128:8081/api/image/${format}`, fd, config)
+      axios.post(`/api/image/${format}`, fd, config)
           .then(resp => {
             setVal(window.URL.createObjectURL(resp.data));
           });

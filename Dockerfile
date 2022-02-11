@@ -50,6 +50,8 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 
 RUN apt-get update && apt-get install -y nodejs
 
+RUN cd /home/runner/work/to-image/to-image
+
 RUN npm install
 
 EXPOSE 8081

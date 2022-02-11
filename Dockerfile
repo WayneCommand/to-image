@@ -1,5 +1,8 @@
 FROM ubuntu:bionic
 
+WORKDIR /usr/local/to-image
+COPY ./ /usr/local/to-image
+
 RUN apt-get update
 RUN apt-get install -y \
 	software-properties-common \

@@ -46,8 +46,8 @@ RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
 
 RUN apt-get install -y curl
 
-# install node 16 LTS runtime
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+# install Node LTS runtime
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
 RUN apt-get update && apt-get install -y nodejs
 

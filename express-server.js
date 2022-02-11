@@ -40,28 +40,45 @@ console.log('Express started on port 8081');
 const image_process = (form, image, format, res) => {
     form.on('close', () => {
         console.log('image process start')
-        sharp(Buffer.concat(image.buffer))
-            .toFormat(format)
-            .toBuffer((err, data, info) => {
-                console.log('image process end')
-                switch (format) {
-                    case 'jpg':
-                        res.set('Content-Type', 'image/jpg');
-                        break;
-                    case 'png':
-                        res.set('Content-Type', 'image/png');
-                        break;
-                    case 'webp':
-                        res.set('Content-Type', 'image/webp');
-                        break;
-                    case 'heic':
-                        res.set('Content-Type', 'image/heic');
-                        break;
-                    case 'heif':
-                        res.set('Content-Type', 'image/heif');
-                        break;
-                }
-                res.send(data);
+
+        let inputSharp = sharp(Buffer.concat(image.buffer));
+
+        if (format === 'heic'){
+            inputSharp = inputSharp.toFormat(format, {
+                quality: 80,
+                compression: 'hevc'
             });
+        }else {
+            inputSharp = inputSharp.toFormat(format, {
+                quality: 80
+            });
+        }
+
+        inputSharp.toBuffer((err, data, info) => {
+
+            if (err) {
+                console.log(err);
+            }
+
+            console.log('image process end')
+            switch (format) {
+                case 'jpg':
+                    res.set('Content-Type', 'image/jpg');
+                    break;
+                case 'png':
+                    res.set('Content-Type', 'image/png');
+                    break;
+                case 'webp':
+                    res.set('Content-Type', 'image/webp');
+                    break;
+                case 'heic':
+                    res.set('Content-Type', 'image/heic');
+                    break;
+                case 'heif':
+                    res.set('Content-Type', 'image/heif');
+                    break;
+            }
+            res.send(data);
+        });
     });
 };

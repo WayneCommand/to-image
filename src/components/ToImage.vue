@@ -51,7 +51,7 @@
           <va-card-title>HEIF(HEIC)</va-card-title>
           <va-card-content>
             <va-image
-                :src="heif"
+                :src="jpg"
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
@@ -110,11 +110,12 @@ export default {
   },
   watch: {
     image(data) {
+
       if (data.length) {
         let uploadFile = data[data.length - 1];
         this.reqImgByFormat(uploadFile, 'jpg', blob => this.jpg = blob);
         this.reqImgByFormat(uploadFile, 'png', blog => this.png = blog);
-        this.reqImgByFormat(uploadFile, 'heic', blog => this.heif = blog);
+        // this.reqImgByFormat(uploadFile, 'avif', blog => this.heif = blog);
         this.reqImgByFormat(uploadFile, 'webp', blog => this.webp = blog);
       }
     }

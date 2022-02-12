@@ -17,7 +17,11 @@ app.post('/api/image/:type', function (req, res) {
         buffer: []
     };
 
-    image_process(form, image, req.params.type, res);
+    try {
+        image_process(form, image, req.params.type, res);
+    } catch (e) {
+        console.log(e)
+    }
 
     // listen on part event for image file
     form.on('part', function(part){

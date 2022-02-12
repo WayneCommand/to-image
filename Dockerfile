@@ -60,7 +60,8 @@ RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
 	&& ldconfig
 
 # install Node runtime
-RUN apt-get install -y nodejs npm
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
 
 # install app runtime
 RUN npm install

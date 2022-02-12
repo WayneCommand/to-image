@@ -22,7 +22,7 @@ RUN yum update -y \
 
 # general build stuff
 RUN yum groupinstall -y "Development Tools" \
-    && yum install -y wget tar
+    && yum install -y wget tar cmake
 
 # openslide is in epel
 RUN yum install -y \

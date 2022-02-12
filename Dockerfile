@@ -38,9 +38,7 @@ RUN apt-get install -y \
 	liblcms2-dev \
 	liborc-dev \
 	libffi-dev \
-    x265 \
-    libx265-179 \
-    libx265-dev
+    	libx265-dev
 
 # add AVIF and HEIC support (libde265 & libheif)
 RUN apt-get install -y \
@@ -67,13 +65,16 @@ RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
 	&& make install \
 	&& ldconfig
 
+RUN pkg-config libheif --print-variables
+RUN vips -l | grep _target
+
 # install Node runtime
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
+# RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+# RUN apt-get install -y nodejs
 
 # install app runtime
-RUN npm install
+# RUN npm install
 
-EXPOSE 8081
-ENTRYPOINT ["npm", "run", "sharp"]
+# EXPOSE 8081
+# ENTRYPOINT ["npm", "run", "sharp"]
 

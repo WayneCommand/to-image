@@ -60,7 +60,7 @@ RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
 	&& ldconfig
 
 # install Node runtime
-RUN apt-get install -y node npm
+RUN apt-get install -y nodejs npm
 
 # install app runtime
 RUN npm install

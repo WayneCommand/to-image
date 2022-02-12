@@ -1,4 +1,4 @@
-FROM ubuntu:21.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -48,7 +48,7 @@ RUN apt-get install -y \
   gobject-introspection
 
 
-ARG VIPS_VERSION=8.11.1
+ARG VIPS_VERSION=8.12.1
 ARG VIPS_URL=https://github.com/libvips/libvips/releases/download
 
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
@@ -59,11 +59,10 @@ RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
 	&& make install \
 	&& ldconfig
 
-# install Node LTS runtime
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+# install Node runtime
+RUN apt-get install -y node npm
 
-RUN apt-get update && apt-get install -y nodejs
-
+# install app runtime
 RUN npm install
 
 EXPOSE 8081

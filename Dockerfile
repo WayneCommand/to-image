@@ -1,4 +1,4 @@
-FROM amazonlinux:2
+FROM ubuntu:bionic
 
 LABEL org.opencontainers.image.authors="waynecommand.com"
 
@@ -8,7 +8,7 @@ ENV VIPSHOME /usr/local/vips
 ENV PKG_CONFIG_PATH $VIPSHOME/lib/pkgconfig
 
 # ARGs
-ARG VIPS_VERSION=8.12.1
+ARG VIPS_VERSION=8.11.1
 ARG VIPS_URL=https://github.com/libvips/libvips/releases/download
 
 ARG WEBP_VERSION=1.1.0
@@ -21,70 +21,43 @@ ARG HEIF_URL=https://github.com/strukturag/libheif/releases/download
 WORKDIR /usr/local/to-image
 COPY ./ /usr/local/to-image
 
-# general build stuff
-RUN yum update -y \
-	&& yum groupinstall -y "Development Tools" \
-	&& yum install -y wget tar
+RUN apt-get update
+RUN apt-get install -y \
+	software-properties-common \
+	build-essential \
+	unzip \
+	wget
 
-# libvips needs libwebp 0.5 or later and the one on amazonlinux2 is 0.3.0, so
-# we have to build it ourselves
+# add the libheif PPA -- it includes AVIF and HEIC support
+RUN add-apt-repository ppa:strukturag/libde265 \
+	&& add-apt-repository ppa:strukturag/libheif \
+	&& apt-get update
 
-# packages needed by libwebp
-RUN yum install -y \
-	libjpeg-devel \
-	libpng-devel \
-	libtiff-devel \
-	libgif-devel
-
-
-# stuff we need to build our own libvips ... this is a pretty basic selection
+# stuff we need to build our own libvips ... this is a pretty random selection
 # of dependencies, you'll want to adjust these
-# dzsave needs libgsf
-RUN yum install -y \
-	libpng-devel \
-	poppler-glib-devel \
-	glib2-devel \
-	libjpeg-devel \
-	expat-devel \
-	zlib-devel \
-	orc-devel \
-	lcms2-devel \
-	libexif-devel \
-	libgsf-devel
+# the libheif-dev in ubuntu 18.04 is too old, you'd need to build that from
+# source
+RUN apt-get install -y \
+	glib-2.0-dev \
+	libheif-dev \
+	libexpat-dev \
+	librsvg2-dev \
+	libpng-dev \
+	libgif-dev \
+	libjpeg-dev \
+	libtiff-dev \
+	libexif-dev \
+	liblcms2-dev \
+	liborc-dev \
+	libffi-dev
 
-# openslide is in epel -- extra packages for enterprise linux
-RUN yum install -y \
-	https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN yum install -y \
-	openslide-devel
-
-# non-standard stuff we build from source goes here
-RUN cd /usr/local/src \
-	&& wget ${WEBP_URL}/libwebp-${WEBP_VERSION}.tar.gz \
-	&& tar xzf libwebp-${WEBP_VERSION}.tar.gz \
-	&& cd libwebp-${WEBP_VERSION} \
-	&& ./configure --enable-libwebpmux --enable-libwebpdemux \
-		--prefix=$VIPSHOME \
-	&& make V=0 \
-	&& make install
-
-
-# install libheif
-RUN wget -N ${HEIF_URL}/v${HEIF_VERSION}/libheif-${HEIF_VERSION}.tar.gz \
-    && tar xzf libheif-${HEIF_VERSION}.tar.gz \
-    && cd libheif-${HEIF_VERSION} \
-    && ./autogen.sh \
-    && ./configure \
-    && make install-strip \
-    && make install
-
-# compile libvips
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
-  && tar xf vips-${VIPS_VERSION}.tar.gz \
-  && cd vips-${VIPS_VERSION} \
-  && ./configure \
-  && make -j V=0 \
-  && make install
+	&& tar xzf vips-${VIPS_VERSION}.tar.gz \
+	&& cd vips-${VIPS_VERSION} \
+	&& ./configure \
+	&& make V=0 \
+	&& make install \
+	&& ldconfig
 
 RUN pkg-config libheif --print-variables
 RUN vips -l | grep _target

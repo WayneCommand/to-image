@@ -23,7 +23,7 @@ RUN apt-get update \
     curl wget \
     pkg-config \
     automake \
-    x265 \
+    x265
 
 
 # stuff we need to build our own libvips ... this is a pretty random selection

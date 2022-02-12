@@ -18,7 +18,7 @@ RUN apt-get update \
     build-essential \
     cmake \
     git \
-    curl wget \
+    curl wget
 
 
 # stuff we need to build our own libvips ... this is a pretty random selection

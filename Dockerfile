@@ -48,6 +48,14 @@ RUN apt-get install -y \
   gobject-introspection \
   zip unzip
 
+RUN wget -O libheif-1.11.0.zip https://github.com/strukturag/libheif/archive/refs/tags/v1.11.0.zip \
+     && unzip libheif-1.11.0.zip \
+     && cd libheif-1.11.0 \
+     && ./autogen.sh \
+     && ./configure \
+     && make \
+     && make install
+
 # compile libvips
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
   && tar xf vips-${VIPS_VERSION}.tar.gz \

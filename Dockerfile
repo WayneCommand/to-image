@@ -41,8 +41,6 @@ RUN apt-get install -y \
 	liborc-dev \
 	libffi-dev
 
-CD
-
 # add AVIF and HEIC support (libde265 & libheif)
 RUN apt-get install -y \
   autoconf \
@@ -61,16 +59,12 @@ RUN wget https://github.com/strukturag/libde265/archive/refs/tags/v1.0.8.zip \
     && cmake .. \
     && make
 
-RUN cd ../..
-
 RUN wget https://github.com/strukturag/libheif/archive/refs/tags/v1.11.0.zip \
     && unzip libheif-1.11.0.zip \
     && cd libheif-1.11.0 \
     && ./autogen.sh \
     && ./configure \
     && make
-
-RUN cd ..
 
 # build libvips
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \

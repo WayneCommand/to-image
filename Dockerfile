@@ -1,5 +1,7 @@
 FROM ubuntu:20.04
 
+LABEL org.opencontainers.image.authors="waynecommand.com"
+
 # ENVs
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LD_LIBRARY_PATH /usr/local/lib
@@ -18,7 +20,10 @@ RUN apt-get update \
     build-essential \
     cmake \
     git \
-    curl wget
+    curl wget \
+    pkg-config \
+    automake \
+    x265 \
 
 
 # stuff we need to build our own libvips ... this is a pretty random selection
@@ -36,16 +41,36 @@ RUN apt-get install -y \
 	liborc-dev \
 	libffi-dev
 
+CD
+
 # add AVIF and HEIC support (libde265 & libheif)
-
-
 RUN apt-get install -y \
   autoconf \
   libtool \
   gtk-doc-tools \
-  gobject-introspection
+  gobject-introspection \
+  zip unzip
 
+RUN wget https://github.com/strukturag/libde265/archive/refs/tags/v1.0.8.zip \
+	&& unzip libde265-1.0.8.zip \
+	&& cd libde265-1.0.8 \
+    && ./autogen.sh \
+    && ./configure \
+    && mkdir build \
+    && cd build \
+    && cmake .. \
+    && make
 
+RUN cd ../..
+
+RUN wget https://github.com/strukturag/libheif/archive/refs/tags/v1.11.0.zip \
+    && unzip libheif-1.11.0.zip \
+    && cd libheif-1.11.0 \
+    && ./autogen.sh \
+    && ./configure \
+    && make
+
+RUN cd ..
 
 # build libvips
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \

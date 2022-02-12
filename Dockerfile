@@ -48,9 +48,20 @@ RUN apt-get install -y \
   gobject-introspection \
   zip unzip
 
-RUN wget -O libheif-1.11.0.zip https://github.com/strukturag/libheif/archive/refs/tags/v1.11.0.zip \
-     && unzip libheif-1.11.0.zip \
-     && cd libheif-1.11.0 \
+RUN wget -O libde265-1.0.8.zip https://github.com/strukturag/libde265/archive/refs/tags/v1.0.8.zip \
+ 	 && unzip libde265-1.0.8.zip \
+ 	 && cd libde265-1.0.8 \
+     && ./autogen.sh \
+     && ./configure \
+     && mkdir build \
+     && cd build \
+     && cmake .. \
+     && make \
+     && make install
+
+RUN wget -O libheif-1.12.0.zip https://github.com/strukturag/libheif/archive/refs/tags/v1.12.0.zip \
+     && unzip libheif-1.12.0.zip \
+     && cd libheif-1.12.0 \
      && ./autogen.sh \
      && ./configure \
      && make \

@@ -1,4 +1,4 @@
-FROM centos:centos7
+FROM centos:8
 
 LABEL org.opencontainers.image.authors="waynecommand.com"
 

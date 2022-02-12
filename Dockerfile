@@ -22,9 +22,7 @@ RUN apt-get update \
     git \
     curl wget \
     pkg-config \
-    automake \
-    x265
-
+    automake
 
 # stuff we need to build our own libvips ... this is a pretty random selection
 # of dependencies, you'll want to adjust these
@@ -39,7 +37,10 @@ RUN apt-get install -y \
 	libexif-dev \
 	liblcms2-dev \
 	liborc-dev \
-	libffi-dev
+	libffi-dev \
+    x265 \
+    libx265-165 \
+    libx265-dev
 
 # add AVIF and HEIC support (libde265 & libheif)
 RUN apt-get install -y \

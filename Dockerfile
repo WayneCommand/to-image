@@ -14,6 +14,9 @@ ARG VIPS_URL=https://github.com/libvips/libvips/releases/download
 ARG WEBP_VERSION=1.1.0
 ARG WEBP_URL=https://storage.googleapis.com/downloads.webmproject.org/releases/webp
 
+ARG HEIF_VERSION=1.9.1
+ARG HEIF_URL=https://github.com/strukturag/libheif/releases/download
+
 
 WORKDIR /usr/local/to-image
 COPY ./ /usr/local/to-image
@@ -67,11 +70,12 @@ RUN cd /usr/local/src \
 
 
 # install libheif
-RUN yum install -y https://download1.rpmfusion.org/free/el/updates/7/x86_64/l/libde265-1.0.2-6.el7.x86_64.rpm \
-    && yum install -y https://download1.rpmfusion.org/free/el/updates/7/x86_64/x/x265-libs-2.9-3.el7.x86_64.rpm \
-    && yum install -y https://download1.rpmfusion.org/free/el/updates/7/x86_64/l/libheif-1.3.2-2.el7.x86_64.rpm \
-    && yum install -y https://download1.rpmfusion.org/free/el/updates/7/x86_64/l/libheif-devel-1.3.2-2.el7.x86_64.rpm
-
+RUN wget -N ${HEIF_URL}/v${HEIF_VERSION}/libheif-${HEIF_VERSION}.tar.gz \
+    && tar xzf libheif-${HEIF_VERSION}.tar.gz \
+    && cd libheif-${HEIF_VERSION} \
+    && ./autogen.sh \
+    && ./configure \
+    && make install-strip
 
 # compile libvips
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
@@ -81,7 +85,7 @@ RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
   && make -j V=0 \
   && make install
 
-# RUN pkg-config libheif --print-variables
+RUN pkg-config libheif --print-variables
 RUN vips -l | grep _target
 
 # install Node runtime

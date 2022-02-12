@@ -16,10 +16,6 @@ ARG VIPS_URL=https://github.com/libvips/libvips/releases/download
 WORKDIR /usr/local/to-image
 COPY ./ /usr/local/to-image
 
-# yum-plugin-ovl helps yum work with the docker overlay filesystem
-RUN yum update -y \
-    && yum -y install yum-plugin-ovl
-
 # general build stuff
 RUN yum groupinstall -y "Development Tools" \
     && yum install -y wget tar cmake

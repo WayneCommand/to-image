@@ -57,14 +57,16 @@ RUN wget -O libde265-1.0.8.zip https://github.com/strukturag/libde265/archive/re
     && mkdir build \
     && cd build \
     && cmake .. \
-    && make
+    && make \
+    && make install
 
 RUN wget -O libheif-1.11.0.zip https://github.com/strukturag/libheif/archive/refs/tags/v1.11.0.zip \
     && unzip libheif-1.11.0.zip \
     && cd libheif-1.11.0 \
     && ./autogen.sh \
     && ./configure \
-    && make
+    && make \
+    && make install
 
 # build libvips
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \

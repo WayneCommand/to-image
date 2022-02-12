@@ -39,7 +39,7 @@ RUN apt-get install -y \
 	liborc-dev \
 	libffi-dev \
     x265 \
-    libx265-165 \
+    libx265-179 \
     libx265-dev
 
 # add AVIF and HEIC support (libde265 & libheif)

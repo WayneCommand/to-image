@@ -75,7 +75,8 @@ RUN wget -N ${HEIF_URL}/v${HEIF_VERSION}/libheif-${HEIF_VERSION}.tar.gz \
     && cd libheif-${HEIF_VERSION} \
     && ./autogen.sh \
     && ./configure \
-    && make install-strip
+    && make install-strip \
+    && make install
 
 # compile libvips
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \

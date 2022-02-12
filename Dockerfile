@@ -1,11 +1,9 @@
-FROM ubuntu:20.04
+FROM debian:buster
 
 LABEL org.opencontainers.image.authors="waynecommand.com"
 
 # ENVs
-ENV DEBIAN_FRONTEND=noninteractive
-ENV LD_LIBRARY_PATH /usr/local/lib
-ENV PKG_CONFIG_PATH /usr/local/lib/pkgconfig
+ENV LD_LIBRARY_PATH /lib:/usr/lib:/usr/local/lib
 
 # ARGs
 ARG VIPS_VERSION=8.12.1
@@ -26,19 +24,21 @@ RUN apt-get update \
 
 # stuff we need to build our own libvips ... this is a pretty random selection
 # of dependencies, you'll want to adjust these
-RUN apt-get install -y \
-	glib-2.0-dev \
-	libexpat-dev \
-	librsvg2-dev \
-	libpng-dev \
-	libgif-dev \
-	libjpeg-dev \
-	libtiff-dev \
-	libexif-dev \
-	liblcms2-dev \
-	liborc-dev \
-	libffi-dev \
-    	libx265-dev
+RUN apt-get -y install \
+  glib2.0-dev \
+  libexif-dev \
+  libexpat1-dev \
+  libfftw3-dev \
+  libgif-dev \
+  libgsf-1-dev \
+  libimagequant-dev \
+  liblcms2-dev \
+  libmagickcore-dev \
+  libopenjp2-7-dev \
+  liborc-0.4-dev \
+  libpng-dev \
+  librsvg2-dev \
+  libtiff5-dev
 
 # add AVIF and HEIC support (libde265 & libheif)
 RUN apt-get install -y \
@@ -48,16 +48,15 @@ RUN apt-get install -y \
   gobject-introspection \
   zip unzip
 
-# build libvips
+# compile libvips
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
-	&& tar xzf vips-${VIPS_VERSION}.tar.gz \
-	&& cd vips-${VIPS_VERSION} \
-	&& ./configure \
-	&& make V=0 \
-	&& make install \
-	&& ldconfig
+  && tar xf vips-${VIPS_VERSION}.tar.gz \
+  && cd vips-${VIPS_VERSION} \
+  && ./configure \
+  && make -j V=0 \
+  && make install
 
-RUN pkg-config libheif --print-variables
+# RUN pkg-config libheif --print-variables
 RUN vips -l | grep _target
 
 # install Node runtime

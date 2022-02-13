@@ -1,3 +1,4 @@
+# it works, but heic is broken.
 FROM ubuntu:bionic
 
 LABEL org.opencontainers.image.authors="waynecommand.com"
@@ -59,16 +60,18 @@ RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz \
 	&& make install \
 	&& ldconfig
 
+
+## install check.
 RUN pkg-config libheif --print-variables
 RUN vips -l | grep _target
 
 # install Node runtime
-# RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-# RUN apt-get install -y nodejs
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
 
 # install app runtime
-# RUN npm install
+RUN npm install
 
-# EXPOSE 8081
-# ENTRYPOINT ["npm", "run", "sharp"]
+EXPOSE 8081
+ENTRYPOINT ["npm", "run", "sharp"]
 

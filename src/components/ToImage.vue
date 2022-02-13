@@ -29,7 +29,7 @@
             </va-image>
           </va-card-content>
           <va-card-actions align="stretch" vertical>
-            <va-button>Download</va-button>
+            <va-button disabled >Download</va-button>
           </va-card-actions>
         </va-card>
       </div>
@@ -42,7 +42,7 @@
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
-            <va-button>Download</va-button>
+            <va-button disabled >Download</va-button>
           </va-card-actions>
         </va-card>
       </div>
@@ -55,7 +55,7 @@
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
-            <va-button>Download</va-button>
+            <va-button disabled >Download</va-button>
           </va-card-actions>
         </va-card>
       </div>
@@ -68,7 +68,7 @@
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
-            <va-button>Download</va-button>
+            <va-button disabled >Download</va-button>
           </va-card-actions>
         </va-card>
       </div>
@@ -113,10 +113,20 @@ export default {
 
       if (data.length) {
         let uploadFile = data[data.length - 1];
-        this.reqImgByFormat(uploadFile, 'jpg', blob => this.jpg = blob);
-        this.reqImgByFormat(uploadFile, 'png', blog => this.png = blog);
-        // this.reqImgByFormat(uploadFile, 'avif', blog => this.heif = blog);
-        this.reqImgByFormat(uploadFile, 'webp', blog => this.webp = blog);
+
+        setTimeout(() => {
+          this.reqImgByFormat(uploadFile, 'jpg', blob => this.jpg = blob);
+        }, 0);
+
+        setTimeout(() => {
+          this.reqImgByFormat(uploadFile, 'png', blog => this.png = blog);
+        }, 500);
+        setTimeout(() => {
+          // this.reqImgByFormat(uploadFile, 'avif', blog => this.heif = blog);
+        }, 1000);
+        setTimeout(() => {
+          this.reqImgByFormat(uploadFile, 'webp', blog => this.webp = blog);
+        }, 1500);
       }
     }
   }

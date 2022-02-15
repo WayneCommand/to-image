@@ -27,7 +27,8 @@ RUN apt-get install -y \
 	software-properties-common \
 	build-essential \
 	unzip \
-	wget
+	wget \
+	curl
 
 # add the libheif PPA -- it includes AVIF and HEIC support
 RUN add-apt-repository ppa:strukturag/libde265 \

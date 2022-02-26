@@ -29,7 +29,7 @@
             </va-image>
           </va-card-content>
           <va-card-actions align="stretch" vertical>
-            <va-button disabled >Download</va-button>
+            <va-button @click="() => aDownload(jpg,`${filename}.jpg`)" :disabled="image.length !== 1">Download</va-button>
           </va-card-actions>
         </va-card>
       </div>
@@ -42,7 +42,7 @@
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
-            <va-button disabled >Download</va-button>
+            <va-button @click="() => aDownload(png,`${filename}.png`)" :disabled="image.length !== 1">Download</va-button>
           </va-card-actions>
         </va-card>
       </div>
@@ -51,11 +51,11 @@
           <va-card-title>HEIF(HEIC)</va-card-title>
           <va-card-content>
             <va-image
-                :src="jpg"
+                :src="heif"
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
-            <va-button disabled >Download</va-button>
+            <va-button @click="() => aDownload(heif,`${filename}.heic`)" :disabled="image.length !== 1">Download</va-button>
           </va-card-actions>
         </va-card>
       </div>
@@ -68,7 +68,7 @@
             />
           </va-card-content>
           <va-card-actions align="stretch" vertical>
-            <va-button disabled >Download</va-button>
+            <va-button @click="() => aDownload(webp,`${filename}.webp`)" :disabled="image.length !== 1">Download</va-button>
           </va-card-actions>
         </va-card>
       </div>
@@ -85,6 +85,7 @@ export default {
   data() {
     return {
       image: [],
+      filename: '',
       jpg: '',
       png: '',
       heif: '',
@@ -104,15 +105,42 @@ export default {
       }
       axios.post(`/api/image/${format}`, fd, config)
           .then(resp => {
-            setVal(window.URL.createObjectURL(resp.data));
+            let img = resp.data;
+            setVal(window.URL.createObjectURL(img));
           });
+    },
+    downloadImg(type) {
+      switch (type) {
+        case 'jpg': {
+          /*
+          img.name = uploadFile.name + format
+          img.lastModifiedDate = new Date()
+           */
+          window.location.assign(this.jpg);
+        }
+
+      }
+
+    },
+    aDownload(url, filename) {
+      let a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url
+      // the filename you want
+      a.download = filename
+      document.body.appendChild(a);
+      a.click();
     }
   },
   watch: {
     image(data) {
-
       if (data.length) {
         let uploadFile = data[data.length - 1];
+        this.filename = uploadFile.name;
+        this.reqImgByFormat(uploadFile, 'jpg', blob => this.jpg = blob);
+        this.reqImgByFormat(uploadFile, 'png', blog => this.png = blog);
+        this.reqImgByFormat(uploadFile, 'heic', blog => this.heif = blog);
+        this.reqImgByFormat(uploadFile, 'webp', blog => this.webp = blog);
 
         setTimeout(() => {
           this.reqImgByFormat(uploadFile, 'jpg', blob => this.jpg = blob);

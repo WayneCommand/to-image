@@ -137,11 +137,6 @@ export default {
       if (data.length) {
         let uploadFile = data[data.length - 1];
         this.filename = uploadFile.name;
-        this.reqImgByFormat(uploadFile, 'jpg', blob => this.jpg = blob);
-        this.reqImgByFormat(uploadFile, 'png', blog => this.png = blog);
-        this.reqImgByFormat(uploadFile, 'heic', blog => this.heif = blog);
-        this.reqImgByFormat(uploadFile, 'webp', blog => this.webp = blog);
-
         setTimeout(() => {
           this.reqImgByFormat(uploadFile, 'jpg', blob => this.jpg = blob);
         }, 0);
@@ -150,7 +145,7 @@ export default {
           this.reqImgByFormat(uploadFile, 'png', blog => this.png = blog);
         }, 500);
         setTimeout(() => {
-          // this.reqImgByFormat(uploadFile, 'avif', blog => this.heif = blog);
+          this.reqImgByFormat(uploadFile, 'heic', blog => this.heif = blog);
         }, 1000);
         setTimeout(() => {
           this.reqImgByFormat(uploadFile, 'webp', blog => this.webp = blog);

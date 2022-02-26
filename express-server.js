@@ -27,16 +27,12 @@ app.post('/api/image/:type', function (req, res) {
 
     form.on('close', () => {
 
-        try {
-            image_process(form, image, req.params.type, res);
-        } catch (e) {
-            console.log(e)
-        }
-
+        image_process(form, image, req.params.type, res);
     });
 
     // listen on part event for image file
     form.on('part', part => {
+
         image_receive(part, image);
     });
 
@@ -69,7 +65,7 @@ const image_process = (form, image, format, res) => {
         });
     }else {
         inputSharp = inputSharp.toFormat(format, {
-            quality: 80
+            quality: 90
         });
     }
 

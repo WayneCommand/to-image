@@ -10,6 +10,11 @@ app.use(cors({
     origin: '*'
 }))
 
+// still crash
+process.on('uncaughtException', err => {
+    console.log('Caught exception: ' + err);
+});
+
 app.post('/api/image/:type', function (req, res) {
 
     let form = new multiparty.Form();
